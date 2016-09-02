@@ -30,20 +30,20 @@ This module is designed to sort directory paths in a more natural way. Order is 
 
 **Note**: path component type is determined by the trailing separator, e.g.:
 
-| path | detected types |
-| :-- | :-- |
-| `/a/b` | dir, **file** |
-| `/a/b/` | dir, dir |
-| `D:\` | dir |
-| `D:\music\` | dir, dir |
+| path          | detected types |
+| :--           | :--            |
+| `/a/b`        | dir, **file**  |
+| `/a/b/`       | dir, dir       |
+| `D:\cat.jpeg` | dir, file      |
+| `D:\music\`   | dir, dir       |
 
 ## Install
 
-**Node.js**
+**Node.js**  
 ~~`npm i sort-paths --save`~~ *not available yet*  
 `var sortPaths = require('sort-paths');`
 
-**Browser**
+**Browser**  
 Include either the full or minified version from `/browser`, and use `sortPaths()` globally.  
 `<script src="path/to/sort-paths.min.js"></script>`
 
@@ -74,10 +74,10 @@ sortPaths([
 `sortPaths(paths, dirSeparator)`
 
 | name         | type     | description                  |
-|:-------------|:---------|:-----------------------------|
+| :--          | :--      | :--                          |
 | paths        | String[] | Paths to sort.               |
 | dirSeparator | String   | One character.               |
-|              |          |                              |
+| &nbsp;       |          |                              |
 | @return      | String[] | Sorted paths.                |
 | @throws      | Error    | On incorrect argument types. |
 
