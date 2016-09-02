@@ -17,7 +17,7 @@ function sortPaths(paths, dirSeparator) {
 
     var tokenizedPaths = paths.map((path) => splitRetain(path, dirSeparator));
 
-    tokenizedPaths.sort(getPathTokensComparator(dirSeparator));
+    tokenizedPaths.sort(createPathTokensComparator(dirSeparator));
 
     return tokenizedPaths.map((pathTokens) => pathTokens.join(''));
 }
@@ -25,9 +25,7 @@ function sortPaths(paths, dirSeparator) {
 /* publish-tasks:auto-version */
 sortPaths.VERSION = '1.0.0';
 
-//sortPaths.comparator //TODO export comparator?
-
-function getPathTokensComparator(dirSeparator) {
+function createPathTokensComparator(dirSeparator) {
     return function (tokensA, tokensB) {
         for (var i = 0, len = Math.max(tokensA.length, tokensB.length); i < len; i++) {
             if (!(i in tokensA)) {
@@ -45,8 +43,8 @@ function getPathTokensComparator(dirSeparator) {
                 continue;
             }
 
-            var isTokenADir = lastChar(tokenA) === dirSeparator;
-            var isTokenBDir = lastChar(tokenB) === dirSeparator;
+            var isTokenADir = tokenA[tokenA.length - 1] === dirSeparator;
+            var isTokenBDir = tokenB[tokenB.length - 1] === dirSeparator;
 
             if (isTokenADir === isTokenBDir) {
                 return tokenA < tokenB ? -1 : 1;
@@ -58,10 +56,6 @@ function getPathTokensComparator(dirSeparator) {
 
         return 0;
     }
-}
-
-function lastChar(string) {
-    return string[string.length - 1];
 }
 
 function assert(condition, message) {
