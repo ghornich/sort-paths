@@ -4,7 +4,12 @@ Sort directory paths in an intuitive way.
 <!-- toc -->
 
 - [NOTICE](#notice)
+- [Description](#description)
 - [Install](#install)
+- [Examples](#examples)
+- [Documentation](#documentation)
+- [TODO](#todo)
+- [License](#license)
 
 <!-- tocstop -->
 
