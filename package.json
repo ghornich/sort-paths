@@ -1,0 +1,38 @@
+{
+  "name": "sort-paths",
+  "version": "1.0.0",
+  "description": "Sort directory paths in an intuitive way.",
+  "keywords": [
+    "sort",
+    "order",
+    "path",
+    "paths"
+  ],
+  "main": "sort-paths.js",
+  "dependencies": {
+    "split-retain": "^1.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-publish-tasks": "github:ghornich/gulp-publish-tasks",
+    "istanbul": "^0.4.5",
+    "tape": "^4.6.0"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "cover": "istanbul cover test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghornich/sort-paths.git"
+  },
+  "author": {
+    "name": "Gergely Hornich",
+    "email": "hornichg@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ghornich/sort-paths/issues"
+  },
+  "homepage": "https://github.com/ghornich/sort-paths#readme"
+}
