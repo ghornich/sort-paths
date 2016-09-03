@@ -4,7 +4,6 @@ var test = require('tape');
 var sortPaths = require('./sort-paths');
 
 test('unix folders', function (t) {
-
     var unsorted = [
         '/home/joe/',
         '/var/www/beta-site/core/pages/login.cgi',
@@ -14,10 +13,12 @@ test('unix folders', function (t) {
         '/',
         '/home/joe/quotes.txt',
         '/bin/',
+        '/bin/'
     ];
 
     var expected = [
         '/',
+        '/bin/',
         '/bin/',
         '/home/joe/',
         '/home/joe/quotes.txt',
@@ -33,7 +34,6 @@ test('unix folders', function (t) {
 });
 
 test('windows folders', function (t) {
-
     var unsorted = [
         'C:\\Users\\Peter\\Documents\\water.jpeg',
         'C:\\Windows\\',
@@ -59,4 +59,29 @@ test('windows folders', function (t) {
     t.end();
 });
 
-//TODO test incorrect separator, errors, empty list, 1 item list
+test('incorrect arguments', function (t) {
+    t.throws(() => sortPaths(6, '/'));
+    t.throws(() => sortPaths('/some/path', '/'));
+    t.throws(() => sortPaths(['/a', '/b']));
+    t.throws(() => sortPaths(['/a', '/b'], 5));
+    t.throws(() => sortPaths(['/a', '/b'], '//'));
+
+    t.end();
+});
+
+test('incorrect separator', function (t) {
+    t.deepEqual(
+        sortPaths(['/a/b/c', 'a/a', 'a/z'], '\\'),
+        ['/a/b/c', 'a/a', 'a/z']
+    );
+
+    t.end();
+});
+
+test('edge cases', function (t) {
+    t.deepEqual(sortPaths([], '/'), []);
+    t.deepEqual(sortPaths(['D:\\a\\b'], '\\'), ['D:\\a\\b']);
+    t.deepEqual(sortPaths(['//', '/', '///'], '/'), ['/', '//', '///']);
+
+    t.end();
+});
