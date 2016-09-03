@@ -15,7 +15,7 @@ Sort directory paths in an intuitive way.
 
 ## NOTICE
 
-  **Stability: 2 - UNSTABLE**
+> :warning: **Stability: 2 - UNSTABLE**
 
 ## Description
 
