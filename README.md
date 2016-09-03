@@ -3,7 +3,6 @@ Sort directory paths in an intuitive way.
 
 <!-- toc -->
 
-- [NOTICE](#notice)
 - [Description](#description)
 - [Install](#install)
 - [Examples](#examples)
@@ -13,13 +12,9 @@ Sort directory paths in an intuitive way.
 
 <!-- tocstop -->
 
-## NOTICE
-
-> :warning: **Stability: 2 - UNSTABLE**
-
 ## Description
 
-This module is designed to sort directory paths in a more natural way. Order is determined by:
+This module is designed to sort absolute directory paths. Order is determined by:
 
 * **Path depth**  
   Shallower paths come first.
@@ -40,7 +35,7 @@ This module is designed to sort directory paths in a more natural way. Order is 
 ## Install
 
 **Node.js**  
-~~`npm i sort-paths --save`~~ *not available yet*  
+`npm i sort-paths --save`  
 `var sortPaths = require('sort-paths');`
 
 **Browser**  
@@ -56,7 +51,7 @@ sortPaths([
     '/a/b/e.txt',
     '/b/',
     '/a/x.txt'
-]);
+], '/');
 
 /*
     /a/x.txt
@@ -67,7 +62,23 @@ sortPaths([
 */
 ```
 
-...
+—
+
+```js
+sortPaths([
+    'E:\\',
+    'D:\\music\\',
+    'D:\\',
+    'D:\\music\\song.mp3'
+], '\\');
+
+/*
+    D:\\
+    D:\\music\\
+    D:\\music\\song.mp3
+    E:\\
+*/
+```
 
 ## Documentation
 
