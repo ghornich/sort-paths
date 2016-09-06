@@ -5,28 +5,62 @@ var splitRetain = require('split-retain');
 module.exports = sortPaths;
 
 /**
- * [sortPaths description]
- * @param  {[type]} paths        [description]
- * @param  {[type]} dirSeparator [description]
- * @return {[type]}              [description]
+ * Allows sorting arbitrary items without modifying or copying them
+ *
+ * @typedef {Object} itemDTO
+ *
+ * @param {String|Object} item - original item
+ * @param {Array} pathTokens - split path tokens. Extracted from `item` using `iteratee` and split using `splitRetain`
  */
-function sortPaths(paths, dirSeparator) {
-    assert(paths && 'length' in paths, 'paths is not an array');
-    assert(typeof dirSeparator === 'string', 'dirSeparator is missing or not a String');
+
+
+function sortPaths(items/* , [iteratee, ] dirSeparator */) {
+    assert(arguments.length >= 2, 'too few arguments');
+    assert(arguments.length <= 3, 'too many arguments');
+
+    var iteratee, dirSeparator;
+
+    if (arguments.length === 2) {
+        iteratee = identity;
+        dirSeparator = arguments[1];
+    }
+    else {
+        iteratee = arguments[1];
+        dirSeparator = arguments[2];
+    }
+
+    assert(isArray(items), 'items is not an array');
+    assert(isFunction(iteratee), 'iteratee is not a function');
+    assert(typeof dirSeparator === 'string', 'dirSeparator is not a String');
     assert(dirSeparator.length === 1, 'dirSeparator must be a single character');
 
-    var tokenizedPaths = paths.map((path) => splitRetain(path, dirSeparator));
+    //encapsulate into DTOs
+    var itemDTOs = items.map(function (item) {
+        var path = iteratee(item);
 
-    tokenizedPaths.sort(createPathTokensComparator(dirSeparator));
+        assert(typeof path === 'string', 'item or iteratee(item) must be a String');
 
-    return tokenizedPaths.map((pathTokens) => pathTokens.join(''));
+        return {
+            item: item,
+            pathTokens: splitRetain(path, dirSeparator)
+        };
+    });
+
+    //sort DTOs
+    itemDTOs.sort(createItemDTOComparator(dirSeparator));
+
+    //decapsulate sorted DTOs and return
+    return itemDTOs.map(itemDTO => itemDTO.item);
 }
 
 /* publish-tasks:auto-version */
-sortPaths.VERSION = '1.0.0';
+sortPaths.VERSION = '1.1.0';
 
-function createPathTokensComparator(dirSeparator) {
-    return function (tokensA, tokensB) {
+function createItemDTOComparator(dirSeparator) {
+    return function (itemDTOa, itemDTOb) {
+        var tokensA = itemDTOa.pathTokens;
+        var tokensB = itemDTOb.pathTokens;
+
         for (var i = 0, len = Math.max(tokensA.length, tokensB.length); i < len; i++) {
             if (!(i in tokensA)) {
                 return -1;
@@ -64,3 +98,14 @@ function assert(condition, message) {
     }
 }
 
+function identity(arg0) {
+    return arg0;
+}
+
+function isFunction(arg) {
+    return Boolean(arg) && Object.prototype.toString.call(arg) === '[object Function]';
+}
+
+function isArray(arg) {
+    return Boolean(arg) && Object.prototype.toString.call(arg) === '[object Array]';
+}

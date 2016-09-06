@@ -3,6 +3,33 @@
 var test = require('tape');
 var sortPaths = require('./sort-paths');
 
+test('errors', function (t) {
+    t.throws(() => sortPaths([]), /too few arguments/);
+    t.throws(() => sortPaths([], (x)=>x, '/', 5), /too many arguments/);
+    t.throws(() => sortPaths([], 5, '/'), /iteratee is not a function/);
+    t.throws(() => sortPaths(6, '/'), /items is not an array/);
+    t.throws(() => sortPaths('/some/path', '/'), /items is not an array/);
+    t.throws(() => sortPaths(['/a', '/b']), /too few arguments/);
+    t.throws(() => sortPaths(['/a', '/b'], 5), /dirSeparator is not a String/);
+    t.throws(() => sortPaths(['/a', '/b'], '//'), /dirSeparator must be a single character/);
+
+    t.end();
+});
+
+test('variable arguments', function (t) {
+    t.deepEqual(
+        sortPaths(['a/b', 'a/', 'a/a/c'], '/'),
+        ['a/', 'a/b', 'a/a/c']
+    );
+
+    t.deepEqual(
+        sortPaths([{ id: 5, path: 'a/b' }, { id: 11, path: 'a/' }, { id: 1, path: 'a/a/c' }], item => item.path, '/'),
+        [{ id: 11, path: 'a/' }, { id: 5, path: 'a/b' }, { id: 1, path: 'a/a/c' }]
+    );
+
+    t.end();
+});
+
 test('unix folders', function (t) {
     var unsorted = [
         '/home/joe/',
@@ -55,16 +82,6 @@ test('windows folders', function (t) {
     ];
 
     t.deepEqual(sortPaths(unsorted, '\\'), expected);
-
-    t.end();
-});
-
-test('incorrect arguments', function (t) {
-    t.throws(() => sortPaths(6, '/'));
-    t.throws(() => sortPaths('/some/path', '/'));
-    t.throws(() => sortPaths(['/a', '/b']));
-    t.throws(() => sortPaths(['/a', '/b'], 5));
-    t.throws(() => sortPaths(['/a', '/b'], '//'));
 
     t.end();
 });

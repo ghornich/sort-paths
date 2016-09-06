@@ -45,13 +45,16 @@ Include either the full or minified version from `/browser`, and use `sortPaths(
 ## Examples
 
 ```js
-sortPaths([
-    '/b/cat.png',
-    '/b/dog.jpeg',
-    '/a/b/e.txt',
-    '/b/',
-    '/a/x.txt'
-], '/');
+sortPaths(
+    [
+        '/b/cat.png',
+        '/b/dog.jpeg',
+        '/a/b/e.txt',
+        '/b/',
+        '/a/x.txt'
+    ],
+    '/'
+);
 
 /*
     /a/x.txt
@@ -65,12 +68,15 @@ sortPaths([
 —
 
 ```js
-sortPaths([
-    'E:\\',
-    'D:\\music\\',
-    'D:\\',
-    'D:\\music\\song.mp3'
-], '\\');
+sortPaths(
+    [
+        'E:\\',
+        'D:\\music\\',
+        'D:\\',
+        'D:\\music\\song.mp3'
+    ],
+    '\\'
+);
 
 /*
     D:\\
@@ -80,21 +86,46 @@ sortPaths([
 */
 ```
 
+—
+
+```js
+sortPaths(
+    [
+        { id: 55, path: 'C:/Users/Al/pictures.zip' },
+        { id: 2,  path: 'C:/Users/w.dll' },
+        { id: 14, path: 'C:/Users/' },
+        { id: 30, path: 'C:/Users/Al/' }
+    ],
+    function (item) { return item.path; },
+    '/'
+);
+
+/*
+    { id: 14, path: 'C:/Users/' }
+    { id: 2,  path: 'C:/Users/w.dll' }
+    { id: 30, path: 'C:/Users/Al/' }
+    { id: 55, path: 'C:/Users/Al/pictures.zip' }
+*/
+```
+
 ## Documentation
 
-`sortPaths(paths, dirSeparator)`
+`sortPaths(items, [iteratee, ] dirSeparator)`
 
-| name         | type     | description                  |
-| :--          | :--      | :--                          |
-| paths        | String[] | Paths to sort.               |
-| dirSeparator | String   | One character.               |
-| &nbsp;       |          |                              |
-| @return      | String[] | Sorted paths.                |
-| @throws      | Error    | On incorrect argument types. |
+| name         | type     | description                                                                              |
+| :--          | :--      | :--                                                                                      |
+| items        | Array<*> | Path strings (or objects) to sort.                                                       |
+| [iteratee]   | Function | Optional iteratee, called on each item. Must return a string. Used when sorting objects. |
+| dirSeparator | String   | One character.                                                                           |
+| &nbsp;       |          |                                                                                          |
+| @return      | Array<*> | Sorted items.                                                                            |
+| @throws      | Error    | On incorrect argument type/count.                                                        |
 
 ## TODO
 
-* Use natural sort for numeric names (e.g. file1, file2, ...)
+* Use natural sort for numeric names (e.g. file1, file2, ...), or add a customizable compare function
+* Browser tests (e.g. karma), for /browser releases
+* Lint
 
 ## License
 
