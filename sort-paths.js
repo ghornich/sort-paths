@@ -50,11 +50,13 @@ function sortPaths(items/* , [iteratee, ] dirSeparator */) {
     itemDTOs.sort(createItemDTOComparator(dirSeparator));
 
     //decapsulate sorted DTOs and return
-    return itemDTOs.map(itemDTO => itemDTO.item);
+    return itemDTOs.map(function (itemDTO) {
+        return itemDTO.item;
+    });
 }
 
 /* publish-tasks:auto-version */
-sortPaths.VERSION = '1.1.0';
+sortPaths.VERSION = '1.1.1';
 
 function createItemDTOComparator(dirSeparator) {
     return function (itemDTOa, itemDTOb) {
